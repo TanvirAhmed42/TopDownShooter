@@ -4,12 +4,14 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent (typeof (NavMeshAgent))]
-public class Enemy : MonoBehaviour {
+public class Enemy : LivingEntity {
 
 	NavMeshAgent agent;
 	Transform target;
 
-	void Start () {
+	protected override void Start ()
+	{
+		base.Start ();
 		agent = GetComponent<NavMeshAgent> ();
 		target = GameObject.FindGameObjectWithTag ("Player").transform;
 
@@ -24,7 +26,9 @@ public class Enemy : MonoBehaviour {
 
 		while (target != null) {
 			Vector3 targetPosition = new Vector3 (target.position.x, 0f, target.position.z);
-			agent.SetDestination (targetPosition);
+			if (!dead) {
+				agent.SetDestination (targetPosition);
+			}
 
 			yield return new WaitForSeconds (refreshRate);
 		}
