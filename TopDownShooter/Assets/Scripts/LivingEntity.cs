@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LivingEntity : MonoBehaviour, IDamageable {
 
+	public event System.Action OnDeath;
+
 	public float startingHealth;
 
 	protected float health;
@@ -23,6 +25,9 @@ public class LivingEntity : MonoBehaviour, IDamageable {
 
 	public void Die () {
 		dead = true;
+		if (OnDeath != null) {
+			OnDeath ();
+		}
 		Destroy (gameObject);
 	}
 }
